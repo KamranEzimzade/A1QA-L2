@@ -1,0 +1,69 @@
+pipeline {
+    agent {
+        label 'host_agent'
+    }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
+    }
+    triggers {
+        pollSCM('H/2 * * * *')
+        upstream(upstreamProjects: 'Tasks_2.2_Upstream_Success', threshold: hudson.model.Result.SUCCESS)
+        // upstream(upstreamProjects: 'Tasks_2.2_Upstream_Failure', threshold: hudson.model.Result.FAILURE)
+    }
+    stages {
+        stage('Pre Build') {
+            steps {
+                echo 'pre-build stage'
+                sh script: 'pwd && ls -lhaFZ',
+                    label: 'Check contents of workspace'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh script: 'mvn compile --batch-mode',
+                label: 'Build the Task 2.2'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh script: 'mvn test -Dgame="${GAME_NAME}" --batch-mode',
+                    label: 'Test the Task 2.2'
+                }
+            }
+        stage('Post Build') {
+            steps {
+                echo 'Cleanup Build Environment'
+            }
+        }
+    }
+    post {
+        success {
+                junit testResults: '**/target/surefire-reports/junitreports/*.xml',
+                skipPublishingChecks: true
+             	sh script: 'tar -cvJf surefire-reports.tar.xz target/surefire-reports',
+                label: 'Tarball and compress artifacts'
+                tar file: 'surefire-reports.tar.gz',
+                archive: true,
+                compress: true,
+                dir: 'target/surefire-reports'
+                archiveArtifacts artifacts: 'surefire-reports.tar.gz',
+                fingerprint: true
+
+                publishHTML(target: [allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: false,
+                reportDir: '/home/kamran/workspace/Tasks_2.2/target/surefire-reports',
+                reportFiles: 'index.html',
+                reportName: 'HTML Report',
+                reportTitles: 'SureFire HTML Report',
+                useWrapperFileDirectly: true])
+        }
+
+
+
+
+        cleanup {
+            cleanWs()
+        }
+    }
+}
