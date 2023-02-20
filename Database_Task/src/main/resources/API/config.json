@@ -1,0 +1,8 @@
+{
+  "baseUrl": "https://jsonplaceholder.typicode.com/",
+  "postsUrl": "posts",
+  "usersUrl": "users",
+  "testDataUrl": "src/main/resources/API/testData.json",
+  "db_credentials_url": "src/main/resources/SQL/credentials.json",
+  "textLength": "5"
+}
