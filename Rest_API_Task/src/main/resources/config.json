@@ -1,0 +1,5 @@
+{
+  "baseUrl": "https://jsonplaceholder.typicode.com/",
+  "testDataUrl": "src/main/resources/testData.json",
+  "textLength": "5"
+}
