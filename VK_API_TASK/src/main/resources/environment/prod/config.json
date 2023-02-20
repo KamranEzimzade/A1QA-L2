@@ -1,0 +1,6 @@
+{
+  "startUrl": "https://vk.com/",
+  "resturl": "https://api.vk.com/method/",
+  "token": "****************",
+  "version": "5.131"
+}
