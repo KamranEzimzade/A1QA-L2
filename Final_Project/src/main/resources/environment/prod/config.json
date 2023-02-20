@@ -1,0 +1,6 @@
+{
+  "BASE_URI": "http://localhost:8080",
+  "URI_LOGIN": "http://%s:%s@localhost:8080",
+  "URI_API": "/api/",
+  "URI_WEB": "/web/projects/"
+}

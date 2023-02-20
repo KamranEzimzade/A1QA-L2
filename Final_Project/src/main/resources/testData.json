@@ -1,0 +1,10 @@
+{
+  "variant": "2",
+  "projectName": "FinalProject",
+  "testName": "ExamTest",
+  "methodName": "ExamMethod",
+  "browserName": "chrome",
+  "login": "*******",
+  "password": "*******",
+  "textLength": 20
+}
